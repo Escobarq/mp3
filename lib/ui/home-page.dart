@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fui_kit/models/maps.dart';
 import 'package:fui_kit/widgets/icons/icon_widget.dart';
+import 'package:myapp/components/play-music.dart';
+import 'package:myapp/ui/list-page.dart';
+import 'package:myapp/utils/navigator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -123,8 +126,10 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildControlButton(SolidRounded.MUSIC, size),
-                    _buildControlButton(RegularRounded.HEART, size),
+                    _buildControlButton(SolidRounded.MUSIC, size, () {
+                      navigateToScreenWithBottomUpTransition(context, ListCountre());
+                    }),
+                    _buildControlButton(RegularRounded.HEART, size, () {}),
                   ],
                 ),
                 SizedBox(height: verticalSpacing),
@@ -164,13 +169,13 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: _buildPlayerControls(size),
+      bottomNavigationBar: const PlayerControls(),
     );
   }
 
-  Widget _buildControlButton(String icon, Size size) {
+  Widget _buildControlButton(String icon, Size size ,VoidCallback? onTap) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       borderRadius: BorderRadius.circular(size.width * 0.06),
       splashColor: Colors.grey,
       child: Container(
@@ -188,67 +193,39 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildSongListItem(String title, String artist, String duration) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(color: Colors.white, fontSize: 14),
-              ),
-              SizedBox(height: 4),
-              Text(
-                artist,
-                style: TextStyle(color: Colors.grey[400], fontSize: 12),
-              ),
-            ],
-          ),
-          Text(
-            duration,
-            style: TextStyle(color: Colors.grey[400], fontSize: 12),
-          ),
-        ],
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.all(Colors.transparent),
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
+        elevation: WidgetStateProperty.all(0),
       ),
-    );
-  }
-
-  Widget _buildPlayerControls(Size size) {
-    return SizedBox(
-      height: size.height * 0.2,
-      child: BottomNavigationBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        type: BottomNavigationBarType.fixed,
-        unselectedItemColor: Colors.white,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shuffle, size: size.width * 0.05),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.skip_previous, size: size.width * 0.08),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pause_circle_filled, size: size.width * 0.13),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.skip_next, size: size.width * 0.08),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.repeat, size: size.width * 0.05),
-            label: '',
-          ),
-        ],
-        onTap: (null),
+      onPressed: () {
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  artist,
+                  style: TextStyle(color: Colors.grey[400], fontSize: 12),
+                ),
+              ],
+            ),
+            Text(
+              duration,
+              style: TextStyle(color: Colors.grey[400], fontSize: 12),
+            ),
+          ],
+        ),
       ),
     );
   }
